@@ -39,7 +39,11 @@ _(Start from Sprint 0, keep updating)_
 
 ## High-level Requirements
 
-List high-level requirements of the project that your team will develop into use cases in later steps
+Users can log in to a system, change passwords, edit their profile credentials, make and edit those posts, and view comments 
+
+There should be super users that can access the database directly, disable/enable and delete users.
+
+Logged in users can have real time chat messages with other logged in users.
 
 # System Design
 
