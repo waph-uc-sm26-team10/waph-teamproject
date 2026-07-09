@@ -10,7 +10,7 @@
 
 1. Member 1 - Corey Brunner, email: brunnecj@mail.uc.edu
 2. Member 2 - Mike Wojtkiewicz, email: wojtkiml@mail.uc.edu
-3. Member 3, email
+3. Member 3 - Bashar Rasras, email: rasrasbr@mail.uc.edu
 4. Member 4, email
 
 # Project Management Information
