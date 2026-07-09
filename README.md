@@ -11,13 +11,13 @@
 1. Member 1 - Corey Brunner, email: brunnecj@mail.uc.edu
 2. Member 2 - Mike Wojtkiewicz, email: wojtkiml@mail.uc.edu
 3. Member 3 - Bashar Rasras, email: rasrasbr@mail.uc.edu
-4. Member 4, email
+4. Member 4 - Pawan Poudyel, email: poudyepn@mail.uc.edu
 
 # Project Management Information
 
 Source code repository (private access): [https://github.com/waph-uc-sm26-team10/waph-teamproject](https://github.com/waph-uc-sm26-team10/waph-teamproject)
 
-Project homepage (public): []()
+Project homepage (public): [homepage](https://waph-uc-sm26-team10.github.io/)
 
 ## Revision History
 
