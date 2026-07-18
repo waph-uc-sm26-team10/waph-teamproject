@@ -24,6 +24,7 @@ Project homepage (public): [homepage](https://waph-uc-sm26-team10.github.io/)
 | Date       |   Version     |  Description |
 |------------|:-------------:|-------------:|
 | 07/09/2026 |  0.0          | README Implementation   |
+| 07/18/2026 |  0.0          | Add SSL and Database setup   |
 
 
 # Overview
@@ -56,6 +57,26 @@ _(Start from Sprint 1, keep updating)_
 ## User Interface
 
 # Implementation
+
+## Local Setup
+
+**Secrets** are kept out of the repo via a git-ignored `.env` file. Copy the template and fill in real values:
+
+```bash
+cp .env.example .env   # then edit .env with your credentials
+```
+
+**Database** - run the setup script (reads `.env`, creates the DB/user, and seeds the admin account):
+
+```bash
+./database/setup.sh
+```
+
+**SSL** - generate a self-signed cert/key and install it (from the `sslkey/` folder):
+
+```bash
+cd sslkey && ./ssl-keygen.sh
+```
 
 _(Start from Sprint 1, keep updating. However, it is important to prepare the technology from Sprint 0)_
 
