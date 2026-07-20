@@ -4,7 +4,8 @@
 *.local
 
 # SSL private keys
-sslkey/*.key
+# sslkey/*.key
+# Commented out by Corey Brunner - The previous approach is more secure and should be followed but to follow the steps of this class it was decided to push the pair of keys.
 
 # Locally generated SQL that may contain credentials
 database/*.local.sql
