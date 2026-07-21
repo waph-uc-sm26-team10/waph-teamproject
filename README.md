@@ -82,6 +82,8 @@ cd sslkey && ./ssl-keygen.sh
 
 \
 ![Corey Brunner Screenshots](images/Sprint0-Getting-Started/webpage-CoreyBrunner.png)
+
+![Bashar Rasras Screenshot](screenshots/rasrasbr_sprint0_screenshot.png)
 \
 
 **Delete this and add your images here**
