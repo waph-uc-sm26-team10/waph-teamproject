@@ -78,6 +78,14 @@ cp .env.example .env   # then edit .env with your credentials
 cd sslkey && ./ssl-keygen.sh
 ```
 
+**Local Domain Setup For Each Member**
+
+\
+![Corey Brunner Screenshots](images/Sprint0-Getting-Started/webpage-CoreyBrunner.png)
+\
+
+**Delete this and add your images here**
+
 _(Start from Sprint 1, keep updating. However, it is important to prepare the technology from Sprint 0)_
 
 For each new sprint cycle, update the implementation of your system (break it down into subsections). Please include some code snippets to illustrate the implementation.
