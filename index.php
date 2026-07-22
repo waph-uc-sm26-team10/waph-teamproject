@@ -1,7 +1,10 @@
 <?php
 function checklogin_mysql($username, $password) {
 
+
+    
     // Load local database settings from .env
+    try{
     $env = parse_ini_file(__DIR__ . '/.env');
 
     $mysqli = new mysqli(
@@ -34,6 +37,11 @@ function checklogin_mysql($username, $password) {
     }
 
     return false;
+    }
+    catch(mysqli_sql_exception $e){
+        echo $e->getMessage();
+        die();
+    }
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
