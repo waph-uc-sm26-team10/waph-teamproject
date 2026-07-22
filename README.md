@@ -78,6 +78,10 @@ cp .env.example .env   # then edit .env with your credentials
 cd sslkey && ./ssl-keygen.sh
 ```
 
+**Login screenshot example**
+
+![login screenshot example](screenshots/login_example_screenshot.png)
+
 **Local Domain Setup For Each Member**
 
 **Corey Brunner HTTPS Setup**
