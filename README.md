@@ -90,8 +90,6 @@ cd sslkey && ./ssl-keygen.sh
 ![Mike Wojtkiewicz Screenshot](screenshots/wojtkiml_sprint0_screenshot.png)
 \
 
-**Delete this and add your images here**
-
 _(Start from Sprint 1, keep updating. However, it is important to prepare the technology from Sprint 0)_
 
 For each new sprint cycle, update the implementation of your system (break it down into subsections). Please include some code snippets to illustrate the implementation.
@@ -149,12 +147,12 @@ Duration: DD/MM/YYYY-DD/MM/YYYY
 
 ### Sprint 1
 
-Duration: MM/DD/YYYY-MM/DD/YYYY
+Duration: 07/14/2026-
 
 #### Completed Tasks: 
 
-1. Task 1
-2. Task 2
+1. task 1 - Updated readme
+2. task 2 - Upload demo screenshot
 3. ...
 
 #### Contributions: 
@@ -162,7 +160,7 @@ Duration: MM/DD/YYYY-MM/DD/YYYY
 1. Member 1, x commits, y hours, contributed in xxx
 2. Member 2, x commits, y hours, contributed in xxx
 3. Member 3, x commits, y hours, contributed in xxx
-4. Member 4, x commits, y hours, contributed in xxx
+4. Member 4 - Pawan Poudyel, 6 commits, y hours, contributed in task 1, 2
 
 #### Sprint Retrospection:
 
@@ -175,7 +173,7 @@ Finally, this meeting should improve your next sprint drastically and understand
 
 | Good     |   Could have been better    |  How to improve?  |
 |----------|:---------------------------:|------------------:|
-|          |                             |                   |
+|          |   communication and meeting times     |         Have a set time where everyone gets in a call to discuess who is working on what     |
 
 
 ### Sprint x
