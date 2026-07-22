@@ -80,14 +80,23 @@ cd sslkey && ./ssl-keygen.sh
 
 **Local Domain Setup For Each Member**
 
+**Corey Brunner HTTPS Setup**
 \
-![Corey Brunner Screenshots](screenshots/webpage-CoreyBrunner.png)
-
+![Corey Brunner Screenshot](screenshots/webpage-CoreyBrunner.png)
+\
+**Bashar Rasras HTTPS Setup**
+\
 ![Bashar Rasras Screenshot](screenshots/rasrasbr_sprint0_screenshot.png)
-
+\
 ![Pawan Poudyel Screenshot](screenshots/poudyepn_sprint0_screenshot.png)
-
+\
 ![Mike Wojtkiewicz Screenshot](screenshots/wojtkiml_sprint0_screenshot.png)
+\
+
+**Successful Local Domain Login Attempt**
+
+\
+![Successful Login Attempt](screenshots/Successful%20Login.png)
 \
 
 _(Start from Sprint 1, keep updating. However, it is important to prepare the technology from Sprint 0)_
