@@ -12,7 +12,7 @@ source "$REPO_ROOT/.env"
 set +a
 
 # Set SQL to MySQL as root (prompts for the root password)
-mysql -u root -p <<SQL
+sudo mysql <<SQL
 CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`;
 CREATE USER IF NOT EXISTS '${DB_USER}'@'${DB_HOST}' IDENTIFIED BY '${DB_PASSWORD}';
 GRANT ALL ON \`${DB_NAME}\`.* TO '${DB_USER}'@'${DB_HOST}';
