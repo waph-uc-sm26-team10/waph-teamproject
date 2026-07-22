@@ -81,11 +81,13 @@ cd sslkey && ./ssl-keygen.sh
 **Local Domain Setup For Each Member**
 
 \
-![Corey Brunner Screenshots](images/Sprint0-Getting-Started/webpage-CoreyBrunner.png)
+![Corey Brunner Screenshots](screenshots/webpage-CoreyBrunner.png)
 
 ![Bashar Rasras Screenshot](screenshots/rasrasbr_sprint0_screenshot.png)
 
 ![Pawan Poudyel Screenshot](screenshots/poudyepn_sprint0_screenshot.png)
+
+![Mike Wojtkiewicz Screenshot](screenshots/wojtkiml_sprint0_screenshot.png)
 \
 
 **Delete this and add your images here**
