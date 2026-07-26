@@ -2,6 +2,7 @@
 .env
 .env.local
 *.local
+config.ini
 
 # SSL private keys
 # sslkey/*.key

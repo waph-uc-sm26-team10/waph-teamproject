@@ -6,7 +6,7 @@
 <body>
     <h2>Simple Login System</h2>
 
-    <form action="index.php" method="POST">
+    <form action="../Back-End/LoginUser.php" method="POST">
         <label>Username:</label>
         <input type="text" name="username"><br><br>
 
