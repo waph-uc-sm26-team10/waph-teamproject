@@ -1,6 +1,6 @@
 <?php
     session_start();
-    $ini = parse_ini_file(__DIR__ . '/../../config.ini');
+    $ini = parse_ini_file(__DIR__ . '../config/config.ini');
 
     $mysqli = new mysqli(
         $ini['DB_HOST'],
