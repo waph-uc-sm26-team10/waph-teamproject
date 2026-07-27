@@ -1,16 +1,13 @@
 <?php
     session_start();
-    $ini = parse_ini_file(__DIR__ . '/../config/config.ini');
+    require_once __DIR__ . '/../config/config.php';
 
-    $mysqli = new mysqli(
-        $ini['DB_HOST'],
-        $ini['DB_USER'],
-        $ini['DB_PASSWORD'],
-        $ini['DB_NAME']
-    );
+    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
     if ($mysqli->connect_errno) {
-        die("Database connection failed - Error Message:" . $mysqli->connect_error);
+        // Log the real reason; show the user nothing that describes our database.
+        error_log("WAPH-Team10 database connection failed: " . $mysqli->connect_error);
+        die("Database connection failed.");
     }
 
     function ChangePassword($newPassword, $oldPassword){

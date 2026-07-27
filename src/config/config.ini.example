@@ -1,7 +1,0 @@
-DB_HOST="localhost"
-DB_NAME="waph_team"
-DB_USER="Your Username"
-DB_PASSWORD="Your Password"
-
-ADMIN_USERNAME="Your Admin Username"
-ADMIN_PASSWORD="Your Admin Password"
