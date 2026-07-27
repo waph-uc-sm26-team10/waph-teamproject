@@ -9,14 +9,14 @@ session_start();
         $phone = $_POST["phone"] ?? "";
 
         //Since the sql query handles null checking the only checking we have to do is where each value is null.
-        if(empty($email) && empty($name) && empty($username)){
+        if(empty($email) && empty($name) && empty($username) && empty($phone)){
             echo "<h2>Registration failed.</h2>";
             echo "<p>All Fields are empty. Cannot change user information</p>";
             header("Refresh:0; url=../Front-End/changeaccountinfo.php");
             exit();
         }
 
-        if (UpdateUser($email,$username,$name)) {
+        if (UpdateUser($email,$username,$name, $phone)) {
             echo "<h2>Registration successful!</h2>";
             echo "<p>Welcome, " . htmlentities($name, ENT_QUOTES, 'UTF-8') . "</p>";
             header("Refresh:0; url=../Front-End/homepage.php");

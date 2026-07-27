@@ -124,7 +124,7 @@
             $preparedsql = "UPDATE users SET
                 email = CASE WHEN ? IS NOT NULL THEN ? ELSE email END,
                 username = CASE WHEN ? IS NOT NULL THEN ? ELSE username END,
-                name = CASE WHEN ? IS  NOT NULL THEN ? ELSE name END
+                name = CASE WHEN ? IS  NOT NULL THEN ? ELSE name END,
                 phone = CASE WHEN ? IS  NOT NULL THEN ? ELSE phone END
             WHERE username = ?";
             $stmt = $mysqli->prepare($preparedsql);
