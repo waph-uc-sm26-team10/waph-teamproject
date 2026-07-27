@@ -18,4 +18,5 @@ USE waph_team;
 
 ALTER TABLE users 
 ADD email varchar(255) NOT NULL FIRST,
-ADD name varchar(50) NOT NULL AFTER username;
+ADD name varchar(50) NOT NULL AFTER username
+ADD phone varchar(20) AFTER name;

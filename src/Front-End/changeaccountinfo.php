@@ -13,6 +13,8 @@
         <input type="text" name="username"><br><br>
         <label>name:</label>
         <input type="text" name="name"><br><br>
+        <label>Phone Number:</label>
+        <input type="text" name="phone"><br><br>
         <input type="submit" value="Submit">
     </form>
 </body>

@@ -110,7 +110,7 @@
         }
     }
 
-    function UpdateUser($email,$username,$name){
+    function UpdateUser($email,$username,$name,$phone){
         try{
             global $mysqli;
             //Check if value is empty and if so set it to null so the sqli query works 
@@ -118,19 +118,21 @@
             $email = empty($email) ? null : $email;
             $username = empty($username) ? null : $username;
             $name = empty($name) ? null : $name;
+            $phone = empty($phone) ? null : $phone;
             //This checks if the new email username or name is null and if so keeps the current value inside that column.
             //https://www.w3schools.com/sql/sql_case.asp
             $preparedsql = "UPDATE users SET
                 email = CASE WHEN ? IS NOT NULL THEN ? ELSE email END,
                 username = CASE WHEN ? IS NOT NULL THEN ? ELSE username END,
                 name = CASE WHEN ? IS  NOT NULL THEN ? ELSE name END
+                phone = CASE WHEN ? IS  NOT NULL THEN ? ELSE phone END
             WHERE username = ?";
             $stmt = $mysqli->prepare($preparedsql);
             if(!$stmt) {
                 $_SESSION['StatusMessage'] = "Prepared statement failed.";
                 die();
             }
-            $stmt->bind_param("sssssss", $email, $email, $username, $username, $name, $name, $_SESSION['username']);
+            $stmt->bind_param("sssssssss", $email, $email, $username, $username, $name, $name,$phone,$phone, $_SESSION['username']);
             //check if username already exists 
             if(FindUser($username)){
                 $_SESSION['StatusMessage'] = "Username Already Exists";

@@ -6,6 +6,7 @@ session_start();
         $email = $_POST["email"] ?? "";
         $username = $_POST["username"] ?? "";
         $name = $_POST["name"] ?? "";
+        $phone = $_POST["phone"] ?? "";
 
         //Since the sql query handles null checking the only checking we have to do is where each value is null.
         if(empty($email) && empty($name) && empty($username)){
