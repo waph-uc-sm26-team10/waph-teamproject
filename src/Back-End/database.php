@@ -1,6 +1,6 @@
 <?php
     session_start();
-    $ini = parse_ini_file(__DIR__ . '../config/config.ini');
+    $ini = parse_ini_file(__DIR__ . '/../config/config.ini');
 
     $mysqli = new mysqli(
         $ini['DB_HOST'],
@@ -99,12 +99,52 @@
                 return false;
             }
             if($stmt->execute()){
+                $_SESSION['StatusMessage'] = "Account Registered Successfully";
                 return true;
             }
             $_SESSION['StatusMessage'] = "Failed to Register User. Please try again!";
             return false;
         }catch(mysqli_sql_exception $e){
             //echo "<p>debug Info>" . $e->getMessage() ."</p>";
+            die();
+        }
+    }
+
+    function UpdateUser($email,$username,$name){
+        try{
+            global $mysqli;
+            //Check if value is empty and if so set it to null so the sqli query works 
+            //otherwise keep value
+            $email = empty($email) ? null : $email;
+            $username = empty($username) ? null : $username;
+            $name = empty($name) ? null : $name;
+            //This checks if the new email username or name is null and if so keeps the current value inside that column.
+            //https://www.w3schools.com/sql/sql_case.asp
+            $preparedsql = "UPDATE users SET
+                email = CASE WHEN ? IS NOT NULL THEN ? ELSE email END,
+                username = CASE WHEN ? IS NOT NULL THEN ? ELSE username END,
+                name = CASE WHEN ? IS  NOT NULL THEN ? ELSE name END
+            WHERE username = ?";
+            $stmt = $mysqli->prepare($preparedsql);
+            if(!$stmt) {
+                $_SESSION['StatusMessage'] = "Prepared statement failed.";
+                die();
+            }
+            $stmt->bind_param("sssssss", $email, $email, $username, $username, $name, $name, $_SESSION['username']);
+            //check if username already exists 
+            if(FindUser($username)){
+                $_SESSION['StatusMessage'] = "Username Already Exists";
+                return false;
+            }
+            if($stmt->execute()){
+                if(!empty($username)) $_SESSION['username'] = $username;
+                $_SESSION['StatusMessage'] = "Account Info Changed Successfully";
+                return true;
+            }
+            $_SESSION['StatusMessage'] = "Failed to change account info. Please try again";
+            return false;
+        }catch(mysqli_sql_exception $e){
+            echo "<p>debug Info>" . $e->getMessage() ."</p>";
             die();
         }
     }

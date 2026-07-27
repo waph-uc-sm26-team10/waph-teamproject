@@ -11,7 +11,7 @@
         if (empty($username) || empty($password)) {
             echo "<h2>Registration failed.</h2>";
             echo "<p>Username and password cannot be empty.</p>";
-            header("Refresh:0; url=../Front-End/loginform.php");
+            header("Refresh:0; url=../Front-End/registrationform.php");
             exit();
         }
         echo $email;
@@ -21,7 +21,7 @@
         if(empty($email) || empty($name)){
             echo "<h2>Registration failed.</h2>";
             echo "<p>email and name cannot be empty.</p>";
-            //header("Refresh:0; url:../Front-End/loginform.php");
+            header("Refresh:0; ur=../Front-End/registrationform.php");
             exit();
         }
 
@@ -32,7 +32,7 @@
             exit();
         } else {
             echo "<h2>Registration Failed!</h2>";
-            header("Refresh:0; url=../Front-End/loginform.php");
+            header("Refresh:0; url=../Front-End/registrationform.php");
             exit();
         }
 

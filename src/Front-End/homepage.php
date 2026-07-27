@@ -12,5 +12,6 @@
 <body>
     You were able to login!!!!<br>
     <a href="changepassword.php">change password</a>
+    <a href="changeaccountinfo.php">change account info</a>
 </body>
 </html>
