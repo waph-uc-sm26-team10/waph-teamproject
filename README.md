@@ -25,6 +25,7 @@ Project homepage (public): [homepage](https://waph-uc-sm26-team10.github.io/)
 |------------|:-------------:|-------------:|
 | 07/09/2026 |  0.0          | README Implementation   |
 | 07/18/2026 |  0.0          | Add SSL and Database setup   |
+| 07/26/2026 | 0.1|Implement basic functional requirements such as login, registration, and account management.
 
 
 # Overview
@@ -36,7 +37,7 @@ _Note: You need to update this section according to each sprint_
 
 # System Analysis
 
-_(Start from Sprint 0, keep updating)_
+Create a full stack web application that creates, edits, and manages users. The application in sprint one should allow the user to create an account, manage that account, and login into the web app. Sprint 1 should account for viewing user posts.
 
 ## High-level Requirements
 
@@ -53,10 +54,17 @@ _(Start from Sprint 1, keep updating)_
 ## Use-Case Realization
 
 ## Database 
-
+Database schema [https://github.com/waph-uc-sm26-team10/waph-teamproject/blob/main/database/schema.sql](https://github.com/waph-uc-sm26-team10/waph-teamproject/blob/main/database/schema.sql)
 ## User Interface
-
+[Click here to see front end/UI code](/src/Front-End)
 # Implementation
+A monolithic application that intereacts with a database, the server, and the front-end side code. In sprint one it is broken down into 4 main tasks
+
+- Interact with users table
+   - Logging in
+   - Registration
+   - Account Management
+- Create a posts table and allow users to view posts
 
 ## Local Setup
 
@@ -119,6 +127,11 @@ _Include a brief explanation of your implementation and the security aspects bas
 *  How did you defend your code against known attacks such as XSS, SQL Injection, CSRF, Session Hijacking
 *   How do you separate the roles of super users and regular users?
 
+## Sprint 1
+
+Implemented CSRF, CSP, Session Management, password hashing, and Encoding principals to create a secure application.
+
+In sprint one session flags are set, secret tokens, md5 hashing for passwords, and encoding with htmlentities.
 # Demo (screenshots)
 
 _You need to capture screenshots to demonstrate how your web application works. The screenshots must be accompanied by a short description of its functionalities following the implementation as below:_
@@ -133,6 +146,10 @@ _You need to capture screenshots to demonstrate how your web application works. 
 *   A regular logged-in user cannot access the link for superusers
 *   A logged-in user can have a real-time chat with other logged-in users
 
+## Sprint 1
+
+Super users have not been implemented yet.
+
 # Software Process Management
 
 _(Start from Sprint 0, keep updating)_
@@ -143,34 +160,34 @@ Introduce how your team uses a software management process, e.g., Scrum, and how
 
 ### Sprint 0
 
-Duration: DD/MM/YYYY-DD/MM/YYYY
+Duration: 09/07/2026-21/07/2026
 
 #### Completed Tasks: 
 
-1. Task 1
-2. Task 2
-3. ...
+1. Create Database Schema 
+2. Create SSL keys 
+3. Host Web server over https and custom domain
 
 #### Contributions: 
 
-1. Member 1, x commits, y hours, contributed in xxx
+1. Corey Brunner, 7 commits, 4.5 hours, contributed in Included a custom domain screenshot inside readme. Completed Individual tasks. 
 2. Member 2, x commits, y hours, contributed in xxx
 3. Member 3, x commits, y hours, contributed in xxx
 4. Member 4, x commits, y hours, contributed in xxx
 
 ### Sprint 1
 
-Duration: 07/14/2026-
+Duration: 07/14/2026-07/28/2026
 
 #### Completed Tasks: 
 
 1. task 1 - Updated readme
 2. task 2 - Upload demo screenshot
-3. ...
+3. task 3 - Implement basic front-end and back-end code to allow a user to login, register, and manage their accounts.
 
 #### Contributions: 
 
-1. Member 1, x commits, y hours, contributed in xxx
+1. Corey Brunner, 6 commits, 9 hours, contributed in Created file structure to store files either in Front-End, Back-End, Database schema, and updated readme. Implemented basic code to allow users to sign on, create accounts, and manage accounts.
 2. Member 2, x commits, y hours, contributed in xxx
 3. Member 3, x commits, y hours, contributed in xxx
 4. Member 4 - Pawan Poudyel, 6 commits, y hours, contributed in task 1, 2
