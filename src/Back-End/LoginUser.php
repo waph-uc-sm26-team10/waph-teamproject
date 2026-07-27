@@ -13,7 +13,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         header("Refresh:0; url=../Front-End/loginform.php");
         die();
     }
-    var_dump($_POST);
     if (LoginUser($username, $password)) {
         echo "<h2>Login successful!</h2>";
         echo "<p>Welcome, " . htmlentities($name, ENT_QUOTES, 'UTF-8') . "</p>";

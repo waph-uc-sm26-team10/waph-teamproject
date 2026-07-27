@@ -26,13 +26,16 @@ Project homepage (public): [homepage](https://waph-uc-sm26-team10.github.io/)
 | 07/09/2026 |  0.0          | README Implementation   |
 | 07/18/2026 |  0.0          | Add SSL and Database setup   |
 | 07/26/2026 | 0.1|Implement basic functional requirements such as login, registration, and account management.
+| 07/27/2026 | 0.2 | Add posts table and view-posts page, move all secrets to a git-ignored `.env`, deploy over HTTPS |
 
 
 # Overview
 
 The goal of this team project is to build a mini facebook application that takes into account security and full-stack web development.
 
-Describe the overview of the project with a high-level architecture figure. 
+A monolithic LAMP stack: Apache 2.4 over HTTPS, PHP 8.3, and MySQL. The code under `src/` is split into three layers - `Front-End/` (HTML pages and forms), `Back-End/` (request handling and session checks), and `Back-End/database.php`
+(all SQL, prepared statements only). `src/config/` holds configuration: `env.php` reads the git-ignored `.env`, `config.php` turns it into constants. No credentials appear in the source.
+
 _Note: You need to update this section according to each sprint_ 
 
 # System Analysis
@@ -53,8 +56,30 @@ _(Start from Sprint 1, keep updating)_
 
 ## Use-Case Realization
 
-## Database 
+The use cases implemented in Sprint 1, and the files that realize each one:
+
+| Use case | Front-end | Back-end | Data layer function |
+|---|---|---|---|
+| Register a new account | `Front-End/registrationform.php` | `Back-End/Registration.php` | `RegisterUser()`, `FindUser()` |
+| Log in | `Front-End/loginform.php` | `Back-End/LoginUser.php` | `LoginUser()` |
+| Change password | `Front-End/changepassword.php` | `Back-End/ChangePassword.php` | `ChangePassword()` |
+| Edit profile (name, email, phone) | `Front-End/changeaccountinfo.php` | `Back-End/ChangeAccountInfo.php` | `UpdateUser()` |
+| View posts | `Front-End/viewposts.php` | `Back-End/session_auth.php` | `GetAllPosts()` |
+
+`src/index.php` is the entry point. It reads the session and routes visitors to
+`Front-End/homepage.php` if they are logged in, or `Front-End/loginform.php` if not.
+
+## Database
+
 Database schema [https://github.com/waph-uc-sm26-team10/waph-teamproject/blob/main/database/schema.sql](https://github.com/waph-uc-sm26-team10/waph-teamproject/blob/main/database/schema.sql)
+
+Two tables in Sprint 1:
+
+- **`users`** - `username` (PK), `email`, `name`, `phone`, `password` (md5)
+- **`posts`** - `postid` (PK, auto-increment), `title`, `content`, `date`, `owner` (FK → `users.username`)
+
+The foreign key is `ON DELETE CASCADE ON UPDATE CASCADE`: deleting a user removes their posts, and since users can rename themselves, the update cascade keeps their posts attached.
+
 ## User Interface
 [Click here to see front end/UI code](/src/Front-End)
 # Implementation
@@ -65,6 +90,36 @@ A monolithic application that intereacts with a database, the server, and the fr
    - Registration
    - Account Management
 - Create a posts table and allow users to view posts
+
+## Sprint 1 implementation notes
+
+**Configuration.** Credentials live in a git-ignored `.env` read by `src/config/env.php`. The earlier `config.ini` and the committed `database-account.sql` password are gone; the private key committed during Sprint 0 was purged from the git history and the certificate rotated.
+
+**Displaying posts.** `GetAllPosts()` uses the prepared-statement pattern from Lecture 20 - prepare, execute, bind results, fetch:
+
+```php
+$stmt = $mysqli->prepare("SELECT postid, title, content, date, owner FROM posts ORDER BY date DESC");
+$stmt->execute();
+$stmt->bind_result($postid, $title, $content, $date, $owner);
+while($stmt->fetch()){ $posts[] = ['title' => $title, /* ... */ ]; }
+```
+
+Values are encoded on output, so a post containing markup is displayed, not executed:
+
+```php
+<h3><?php echo htmlentities($post['title'], ENT_QUOTES, 'UTF-8'); ?></h3>
+```
+
+**Access control.** `src/Back-End/session_auth.php` is included by every page requiring a login, and redirects to the login form when no session exists.
+
+## Deployment
+
+Served by Apache over HTTPS at `https://waph-team10.minifacebook.com/`. Only the contents of `src/` go into the web root, so the schema, SSL folder and README are never web-reachable. `.env` is placed one directory *above* the web root readableby PHP, not servable by Apache:
+
+```bash
+sudo rsync -a --delete ~/waph-teamproject/src/ /var/www/waph-teamproject/
+sudo install -m 640 -o root -g www-data ~/waph-teamproject/.env /var/www/.env
+```
 
 ## Local Setup
 
@@ -129,9 +184,26 @@ _Include a brief explanation of your implementation and the security aspects bas
 
 ## Sprint 1
 
-Implemented CSRF, CSP, Session Management, password hashing, and Encoding principals to create a secure application.
+**Security programming principles.** Least privilege and no secrets in code. PHP connects with a dedicated MySQL account scoped to this database only with its password in a git-ignored `.env` outside the web root. A missing setting makes `env()` log the problem and return a generic `Configuration error.` rather than connecting with a blank password.
 
-In sprint one session flags are set, secret tokens, md5 hashing for passwords, and encoding with htmlentities.
+**Database security.** Every statement in `database.php` is a prepared statement with bound parameters; no input is concatenated into SQL. Passwords are stored as `md5()` hashes, never plaintext. A foreign key from `posts.owner` to
+`users.username` enforces referential integrity.
+
+**Robust and defensive?** Partly. Database errors are caught, logged with `error_log()`, and shown to the user as a generic message; `display_errors` is off. Earlier versions echoed raw MySQL exceptions and dumped `$_POST` (including the plaintext password) to the page, but they have been removed. Input validation is the main gap.
+
+**Defenses against known attacks:**
+
+| Attack | Status in Sprint 1 |
+|---|---|
+| SQL Injection | **Defended** - prepared statements throughout. |
+| XSS | **Defended on output** - all rendered values pass through `htmlentities(..., ENT_QUOTES, 'UTF-8')`. Verified with a post containing `<script>alert(1)</script>`. |
+| Session Hijacking | **Partial** - HTTPS-only and protected pages require a session. Cookie flags and `session_regenerate_id()` not yet implemented. |
+| CSRF | **Not implemented.** Planned for Sprint 2 using the Lecture 20 token pattern. |
+
+**Super users vs regular users.** Not yet implemented - Sprint 1 has one role. Sprint 2 plan: a `superusers` table with an `/admin` folder behind its own session check.
+
+**Gaps carried into Sprint 2:** input validation (client and server), CSRF tokens, CSP headers, session cookie hardening, role-based access control, and an open-source CSS template.
+
 # Demo (screenshots)
 
 _You need to capture screenshots to demonstrate how your web application works. The screenshots must be accompanied by a short description of its functionalities following the implementation as below:_
@@ -148,7 +220,9 @@ _You need to capture screenshots to demonstrate how your web application works. 
 
 ## Sprint 1
 
-Super users have not been implemented yet.
+Demonstrable this sprint: register, log in, change password, edit profile (name, email, phone), and view posts. The homepage and posts page require a session. Requesting them logged out redirects to the login form.
+
+Super users, post creation/deletion, comments, CSRF demonstration, and real-time chat are not implemented yet and will be demonstrated in later sprints.
 
 # Software Process Management
 
@@ -184,13 +258,16 @@ Duration: 07/14/2026-07/28/2026
 1. task 1 - Updated readme
 2. task 2 - Upload demo screenshot
 3. task 3 - Implement basic front-end and back-end code to allow a user to login, register, and manage their accounts.
+4. task 4 - Design and create the `posts` table and add the view-posts page
+5. task 5 - Move all credentials into a git-ignored `.env`, purge the committed private key and database password from the git history, and rotate the TLS certificate
+6. task 6 - Deploy the application over HTTPS with only `src/` inside the web root
 
 #### Contributions: 
 
 1. Corey Brunner, 6 commits, 9 hours, contributed in Created file structure to store files either in Front-End, Back-End, Database schema, and updated readme. Implemented basic code to allow users to sign on, create accounts, and manage accounts.
-2. Member 2, x commits, y hours, contributed in xxx
-3. Member 3, x commits, y hours, contributed in xxx
-4. Member 4 - Pawan Poudyel, 6 commits, y hours, contributed in task 1, 2
+2. Member 2 - Mike Wojtkiewicz, 5 commits, 3 hours, contributed in tasks 4, 5 and 6. Moved all secrets to a git-ignored `.env` and purged the committed TLS key and database password from the git history; fixed the broken `ALTER TABLE` and rewrote `schema.sql` with the new `posts` table; added `GetAllPosts()`, `viewposts.php`, `session_auth.php` and `index.php`; removed debug output that leaked plaintext passwords and SQL errors; deployed to Apache over HTTPS.
+3. Member 3 - Bashar Rasras, x commits, y hours, contributed in xxx
+4. Member 4 - Pawan Poudyel, 9 commits, y hours, contributed in task 1, 2
 
 #### Sprint Retrospection:
 
@@ -232,4 +309,4 @@ Duration: MM/DD/YYYY-MM/DD/YYYY
 
 # Appendix
 
-Include the content (in text, not as images) of the SQL files and all source code of your PHP files (with the file name). 
+Include the content (in text, not as images) of the SQL files and all source code of your PHP files (with the file name).

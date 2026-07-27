@@ -1,5 +1,7 @@
 <?php
-    session_start();
+    if (session_status() !== PHP_SESSION_ACTIVE) {
+        session_start();
+    }
     require_once __DIR__ . '/../config/config.php';
 
     $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
@@ -53,9 +55,9 @@
             return false;
         }
         catch(mysqli_sql_exception $e){
-            //comment out once working
-            echo "<p>debug Info>" . $e->getMessage() ."</p>";
-            die();
+            error_log("WAPH-Team10 LoginUser failed: " . $e->getMessage());
+            $_SESSION['StatusMessage'] = "Login failed. Please try again.";
+            return false;
         }
     }
     function FindUser($username){
@@ -107,6 +109,45 @@
         }
     }
 
+    function GetAllPosts(){
+        try{
+            global $mysqli;
+            $preparedsql = "SELECT postid, title, content, date, owner FROM posts ORDER BY date DESC, postid DESC";
+            $stmt = $mysqli->prepare($preparedsql);
+            if(!$stmt) {
+                $_SESSION['StatusMessage'] = "Prepared statement failed.";
+                return [];
+            }
+            if(!$stmt->execute()){
+                $_SESSION['StatusMessage'] = "Could not load posts.";
+                return [];
+            }
+
+            $postid = NULL; $title = NULL; $content = NULL; $date = NULL; $owner = NULL;
+            if(!$stmt->bind_result($postid, $title, $content, $date, $owner)){
+                $_SESSION['StatusMessage'] = "Binding failed.";
+                return [];
+            }
+
+            $posts = [];
+            while($stmt->fetch()){
+                $posts[] = [
+                    'postid'  => $postid,
+                    'title'   => $title,
+                    'content' => $content,
+                    'date'    => $date,
+                    'owner'   => $owner
+                ];
+            }
+            $stmt->close();
+            return $posts;
+        }
+        catch(mysqli_sql_exception $e){
+            error_log("WAPH-Team10 GetAllPosts failed: " . $e->getMessage());
+            return [];
+        }
+    }
+
     function UpdateUser($email,$username,$name,$phone){
         try{
             global $mysqli;
@@ -143,8 +184,9 @@
             $_SESSION['StatusMessage'] = "Failed to change account info. Please try again";
             return false;
         }catch(mysqli_sql_exception $e){
-            echo "<p>debug Info>" . $e->getMessage() ."</p>";
-            die();
+            error_log("WAPH-Team10 UpdateUser failed: " . $e->getMessage());
+            $_SESSION['StatusMessage'] = "Failed to change account info. Please try again";
+            return false;
         }
     }
 ?>

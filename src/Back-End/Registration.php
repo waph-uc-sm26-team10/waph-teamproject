@@ -14,10 +14,6 @@
             header("Refresh:0; url=../Front-End/registrationform.php");
             exit();
         }
-        echo $email;
-        echo $name;
-        var_dump($_POST); 
-
         if(empty($email) || empty($name)){
             echo "<h2>Registration failed.</h2>";
             echo "<p>email and name cannot be empty.</p>";

@@ -1,5 +1,5 @@
 <?php
-    session_start();
+    require __DIR__ . "/../Back-End/session_auth.php";
 ?>
 
 <!DOCTYPE html>
@@ -7,10 +7,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Home - miniFacebook</title>
 </head>
 <body>
-    You were able to login!!!!<br>
+    <h2>Welcome, <?php echo htmlentities($_SESSION['username'], ENT_QUOTES, 'UTF-8'); ?></h2>
+    <a href="viewposts.php">view posts</a>
     <a href="changepassword.php">change password</a>
     <a href="changeaccountinfo.php">change account info</a>
 </body>
