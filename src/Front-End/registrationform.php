@@ -1,3 +1,13 @@
+<?php
+session_start();
+
+if (empty($_SESSION["registration_csrf_token"])) {
+	$_SESSION["registration_csrf_token"] = bin2hex(random_bytes(32));
+}
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +25,15 @@
                 <h1>Simple Account Registration System</h1>
 
                 <form action="../Back-End/Registration.php" method="POST">
+		<input
+			type="hidden"
+			name="csrf_token"
+			value="<?php echo htmlentities(
+				$_SESSION["registration_csrf_token"],
+				ENT_QUOTES,
+				"UTF-8"
+			); ?>"
+		>
                     <div class="form-group">
                         <label for="email">Email <span class="required-star">*</span></label>
                         <div class="input-wrap">

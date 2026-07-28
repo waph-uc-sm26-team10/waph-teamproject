@@ -3,6 +3,19 @@
     require __DIR__ . "/database.php";
 
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
+	$submittedToken = $_POST["csrf_token"] ?? "";
+
+	if (
+       	 empty($_SESSION["registration_csrf_token"]) ||
+   	 empty($submittedToken) ||
+   	 !hash_equals(
+       		 $_SESSION["registration_csrf_token"],
+       		 $submittedToken
+   	 )
+	){
+   	 http_response_code(403);
+   	 exit("CSRF attack detected.");
+	}
         $email = sanitize_input($_POST["email"] ?? "");
         $username = sanitize_input($_POST["username"] ?? "");
         $name = sanitize_input($_POST["name"] ?? "");
@@ -58,6 +71,7 @@
         }
 
         if (RegisterUser($email,$username,$name,$password)) {
+ 	    unset($_SESSION["registration_csrf_token"]);
             echo "<h2>Registration successful!</h2>";
             echo "<p>Welcome, " . htmlentities($name, ENT_QUOTES, 'UTF-8') . "</p>";
             header("Refresh:0; url=../Front-End/loginform.php");

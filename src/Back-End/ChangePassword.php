@@ -3,7 +3,19 @@ session_start();
 require __DIR__ . "/database.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $submittedToken = $_POST["csrf_token"] ?? "";
 
+if (
+    empty($_SESSION["change_password_csrf_token"]) ||
+    empty($submittedToken) ||
+    !hash_equals(
+        $_SESSION["change_password_csrf_token"],
+        $submittedToken
+    )
+) {
+    http_response_code(403);
+    exit("CSRF attack detected.");
+}
     $oldPassword = sanitize_input($_POST["oldPassword"] ?? "");
     $newPassword = sanitize_input($_POST["newPassword"] ?? "");
 
@@ -29,6 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     if (ChangePassword($newPassword,$oldPassword)) {
+	unset($_SESSION["change_password_csrf_token"]);
         echo "<h2>Password changed successful!</h2>";
         echo "<p>Welcome, " . htmlentities($name, ENT_QUOTES, 'UTF-8') . "</p>";
         header("Refresh:0; url=../Front-End/homepage.php");
