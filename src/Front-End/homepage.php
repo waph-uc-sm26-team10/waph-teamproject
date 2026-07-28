@@ -35,6 +35,10 @@
                     <i class="fa-solid fa-user-gear"></i>
                     <span>change account info</span>
                 </a>
+                <a class="home-action" href="../Back-End/logout.php">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>logout</span>
+                </a>
             </nav>
         </section>
     </main>

@@ -56,6 +56,8 @@
                 <div class="auth-footer">
                     <span>Back to home?</span>
                     <a class="text-link" href="homepage.php">home page</a>
+                    <span>|</span>
+                    <a class="text-link" href="../Back-End/logout.php">logout</a>
                 </div>
             </section>
         </div>

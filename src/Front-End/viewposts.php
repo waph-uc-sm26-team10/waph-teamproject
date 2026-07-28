@@ -22,10 +22,16 @@
                     <h1>Posts</h1>
                     <p class="account-meta">Signed in as <?php echo htmlentities($_SESSION['username'], ENT_QUOTES, 'UTF-8'); ?></p>
                 </div>
-                <a class="secondary-button" href="homepage.php">
-                    <i class="fa-solid fa-house"></i>
-                    Home
-                </a>
+                <div class="header-actions">
+                    <a class="secondary-button" href="homepage.php">
+                        <i class="fa-solid fa-house"></i>
+                        Home
+                    </a>
+                    <a class="secondary-button" href="../Back-End/logout.php">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        Logout
+                    </a>
+                </div>
             </header>
 
 <?php if (empty($posts)): ?>

@@ -19,7 +19,7 @@
                         <label for="email">Email <span class="required-star">*</span></label>
                         <div class="input-wrap">
                             <i class="fa-solid fa-envelope input-icon"></i>
-                            <input id="email" type="text" name="email">
+                            <input id="email" type="email" name="email" required>
                         </div>
                     </div>
 
@@ -27,7 +27,7 @@
                         <label for="username">Username: <span class="required-star">*</span></label>
                         <div class="input-wrap">
                             <i class="fa-solid fa-user input-icon"></i>
-                            <input id="username" type="text" name="username">
+                            <input id="username" type="text" name="username" required pattern="\w+" title="Username can contain only letters, numbers, and underscores.">
                         </div>
                     </div>
 
@@ -35,7 +35,7 @@
                         <label for="name">name: <span class="required-star">*</span></label>
                         <div class="input-wrap">
                             <i class="fa-solid fa-id-card input-icon"></i>
-                            <input id="name" type="text" name="name">
+                            <input id="name" type="text" name="name" required>
                         </div>
                     </div>
 
@@ -43,7 +43,7 @@
                         <label for="password">Password: <span class="required-star">*</span></label>
                         <div class="input-wrap">
                             <i class="fa-solid fa-key input-icon"></i>
-                            <input id="password" type="password" name="password">
+                            <input id="password" type="password" name="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" title="Password must be at least 6 characters and include uppercase, lowercase, and a number.">
                         </div>
                     </div>
 
