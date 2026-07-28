@@ -436,7 +436,7 @@ Supporting and security tasks:
 
 3. Bashar Rasras, 2 commits, 4 hours, contributed by implementing and testing CSRF protection for registration, password changes, and profile-information changes; deploying the updated application; testing valid, modified, and missing CSRF tokens; troubleshooting the account-information and password-change forms; capturing Sprint 1 testing evidence; and updating the Sprint 1 report.
 
-4. Pawan Poudyel, 6 commits, , 
+4. Pawan Poudyel, 6 commits, 4 hours ,  contributed by implmenting the input validation for passwords, and implemented the UI for all pages using a template
 
 #### Sprint Retrospection
 
