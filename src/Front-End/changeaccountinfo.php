@@ -1,21 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Lab 3 Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Change Account Info</title>
+    <link rel="stylesheet" href="../../assets/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="ui.css">
 </head>
 <body>
-    <h2>Simple Account Info Editing System</h2>
+    <main class="auth-shell">
+        <div class="auth-panel">
+            <section class="auth-card">
+                <p class="project-kicker">Account Settings</p>
+                <h1>Simple Account Info Editing System</h1>
 
-    <form action="../Back-End/ChangeAccountInfo.php" method="POST">
-        <label>Email</label>
-        <input type="text" name="email"><br><br>
-        <label>Username:</label>
-        <input type="text" name="username"><br><br>
-        <label>name:</label>
-        <input type="text" name="name"><br><br>
-        <label>Phone Number:</label>
-        <input type="text" name="phone"><br><br>
-        <input type="submit" value="Submit">
-    </form>
+                <form action="../Back-End/ChangeAccountInfo.php" method="POST">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-envelope input-icon"></i>
+                            <input id="email" type="text" name="email">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-user input-icon"></i>
+                            <input id="username" type="text" name="username">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">name:</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-id-card input-icon"></i>
+                            <input id="name" type="text" name="name">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number:</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-phone input-icon"></i>
+                            <input id="phone" type="text" name="phone">
+                        </div>
+                    </div>
+
+                    <button class="primary-button" type="submit">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Submit
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    <span>Back to home?</span>
+                    <a class="text-link" href="homepage.php">home page</a>
+                </div>
+            </section>
+        </div>
+    </main>
 </body>
 </html>

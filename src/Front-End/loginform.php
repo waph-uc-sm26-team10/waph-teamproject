@@ -1,19 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Lab 3 Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>miniFacebook Login</title>
+    <link rel="stylesheet" href="../../assets/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="ui.css">
 </head>
 <body>
-    <h2>Simple Login System</h2>
+    <main class="auth-shell">
+        <div class="auth-panel">
+            <section class="auth-card">
+                <p class="project-kicker">miniFacebook</p>
+                <h1>Simple Login System</h1>
 
-    <form action="../Back-End/LoginUser.php" method="POST">
-        <label>Username:</label>
-        <input type="text" name="username"><br><br>
+                <form action="../Back-End/LoginUser.php" method="POST">
+                    <div class="form-group">
+                        <label for="username">Username: <span class="required-star">*</span></label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-user input-icon"></i>
+                            <input id="username" type="text" name="username">
+                        </div>
+                    </div>
 
-        <label>Password:</label>
-        <input type="password" name="password"><br><br>
+                    <div class="form-group">
+                        <label for="password">Password: <span class="required-star">*</span></label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-key input-icon"></i>
+                            <input id="password" type="password" name="password">
+                        </div>
+                    </div>
 
-        <input type="submit" value="Login">
-    </form>
+                    <button class="primary-button" type="submit">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        Login
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    <span>Not a user yet?</span>
+                    <a class="text-link" href="registrationform.php">Join us</a>
+                </div>
+            </section>
+        </div>
+    </main>
 </body>
 </html>
