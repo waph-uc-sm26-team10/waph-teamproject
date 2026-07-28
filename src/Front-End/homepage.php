@@ -8,11 +8,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - miniFacebook</title>
+    <link rel="stylesheet" href="../../assets/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="ui.css">
 </head>
 <body>
-    <h2>Welcome, <?php echo htmlentities($_SESSION['username'], ENT_QUOTES, 'UTF-8'); ?></h2>
-    <a href="viewposts.php">view posts</a>
-    <a href="changepassword.php">change password</a>
-    <a href="changeaccountinfo.php">change account info</a>
+    <main class="page-shell">
+        <section class="content-panel home-panel">
+            <header class="content-header home-header">
+                <div>
+                    <p class="project-kicker">miniFacebook</p>
+                    <h1>Welcome, <?php echo htmlentities($_SESSION['username'], ENT_QUOTES, 'UTF-8'); ?></h1>
+                    <p class="account-meta">Choose an account option below.</p>
+                </div>
+            </header>
+
+            <nav class="home-actions">
+                <a class="home-action" href="viewposts.php">
+                    <i class="fa-solid fa-newspaper"></i>
+                    <span>view posts</span>
+                </a>
+                <a class="home-action" href="changepassword.php">
+                    <i class="fa-solid fa-key"></i>
+                    <span>change password</span>
+                </a>
+                <a class="home-action" href="changeaccountinfo.php">
+                    <i class="fa-solid fa-user-gear"></i>
+                    <span>change account info</span>
+                </a>
+            </nav>
+        </section>
+    </main>
 </body>
 </html>
