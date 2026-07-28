@@ -10,7 +10,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 }
 
 // Relative targets so this works wherever the app is mounted in the web root.
-if (!empty($_SESSION['username'])) {
+if (!empty($_SESSION['userid'])) {
     header("Location: Front-End/homepage.php");
 } else {
     header("Location: Front-End/loginform.php");

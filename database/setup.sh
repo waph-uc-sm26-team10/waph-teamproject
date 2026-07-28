@@ -35,13 +35,15 @@ sudo mysql "${DB_NAME}" <<SQL
 INSERT INTO users(email, username, name, password)
 VALUES ('${ADMIN_EMAIL}', '${ADMIN_USERNAME}', '${ADMIN_NAME}', md5('${ADMIN_PASSWORD}'));
 
+SET @adminid = LAST_INSERT_ID();
+
 INSERT INTO posts(title, content, owner) VALUES
   ('Welcome to miniFacebook',
    'This is the first post on the Team 10 miniFacebook application.',
-   '${ADMIN_USERNAME}'),
+   @adminid),
   ('Sprint 1 progress',
    'Registration, login, password changes, and profile editing are in place.',
-   '${ADMIN_USERNAME}');
+   @adminid);
 SQL
 
 echo "Database '${DB_NAME}' set up successfully (tables: users, posts)."

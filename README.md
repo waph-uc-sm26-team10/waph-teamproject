@@ -75,10 +75,14 @@ Database schema [https://github.com/waph-uc-sm26-team10/waph-teamproject/blob/ma
 
 Two tables in Sprint 1:
 
-- **`users`** - `username` (PK), `email`, `name`, `phone`, `password` (md5)
-- **`posts`** - `postid` (PK, auto-increment), `title`, `content`, `date`, `owner` (FK → `users.username`)
+- **`users`** - `userid` (PK, auto-increment), `email` (unique), `username` (unique), `name`, `phone`, `password` (md5)
+- **`posts`** - `postid` (PK, auto-increment), `title`, `content`, `date`, `owner` (FK → `users.userid`)
 
-The foreign key is `ON DELETE CASCADE ON UPDATE CASCADE`: deleting a user removes their posts, and since users can rename themselves, the update cascade keeps their posts attached.
+`userid` is a surrogate key. Usernames are editable on the account page, so using
+one as the primary key would mean every rename had to cascade into every table
+referencing that user. `userid` never changes; `username` and `email` are kept
+UNIQUE so neither can be duplicated. The foreign key is `ON DELETE CASCADE`, so
+deleting a user removes their posts.
 
 ## User Interface
 [Click here to see front end/UI code](/src/Front-End)
@@ -98,7 +102,9 @@ A monolithic application that intereacts with a database, the server, and the fr
 **Displaying posts.** `GetAllPosts()` uses the prepared-statement pattern from Lecture 20 - prepare, execute, bind results, fetch:
 
 ```php
-$stmt = $mysqli->prepare("SELECT postid, title, content, date, owner FROM posts ORDER BY date DESC");
+$stmt = $mysqli->prepare("SELECT p.postid, p.title, p.content, p.date, u.username
+                          FROM posts p JOIN users u ON p.owner = u.userid
+                          ORDER BY p.date DESC, p.postid DESC");
 $stmt->execute();
 $stmt->bind_result($postid, $title, $content, $date, $owner);
 while($stmt->fetch()){ $posts[] = ['title' => $title, /* ... */ ]; }
@@ -114,7 +120,7 @@ Values are encoded on output, so a post containing markup is displayed, not exec
 
 ## Deployment
 
-Served by Apache over HTTPS at `https://waph-team10.minifacebook.com/`. Only the contents of `src/` go into the web root, so the schema, SSL folder and README are never web-reachable. `.env` is placed one directory *above* the web root readableby PHP, not servable by Apache:
+Served by Apache over HTTPS at `https://waph-team10.minifacebook.com/`. Only the contents of `src/` go into the web root, so the schema, SSL folder and README are never web-reachable. `.env` is placed one directory *above* the web root - readable by PHP, not servable by Apache:
 
 ```bash
 sudo rsync -a --delete ~/waph-teamproject/src/ /var/www/waph-teamproject/
@@ -187,7 +193,8 @@ _Include a brief explanation of your implementation and the security aspects bas
 **Security programming principles.** Least privilege and no secrets in code. PHP connects with a dedicated MySQL account scoped to this database only with its password in a git-ignored `.env` outside the web root. A missing setting makes `env()` log the problem and return a generic `Configuration error.` rather than connecting with a blank password.
 
 **Database security.** Every statement in `database.php` is a prepared statement with bound parameters; no input is concatenated into SQL. Passwords are stored as `md5()` hashes, never plaintext. A foreign key from `posts.owner` to
-`users.username` enforces referential integrity.
+`users.userid` enforces referential integrity, and `username`/`email` carry UNIQUE
+constraints so duplicates are rejected by the database, not just the application.
 
 **Robust and defensive?** Partly. Database errors are caught, logged with `error_log()`, and shown to the user as a generic message; `display_errors` is off. Earlier versions echoed raw MySQL exceptions and dumped `$_POST` (including the plaintext password) to the page, but they have been removed. Input validation is the main gap.
 
@@ -255,19 +262,27 @@ Duration: 07/14/2026-07/28/2026
 
 #### Completed Tasks: 
 
-1. task 1 - Updated readme
-2. task 2 - Upload demo screenshot
-3. task 3 - Implement basic front-end and back-end code to allow a user to login, register, and manage their accounts.
-4. task 4 - Design and create the `posts` table and add the view-posts page
-5. task 5 - Move all credentials into a git-ignored `.env`, purge the committed private key and database password from the git history, and rotate the TLS certificate
-6. task 6 - Deploy the application over HTTPS with only `src/` inside the web root
+Sprint 1 required tasks:
+
+1. Database design and implementation - `users` and `posts` tables
+2. User registration and login
+3. Logged-in users can change their password
+4. Logged-in users can edit their profile - name, additional email, phone
+5. Logged-in users can view posts from the database
+
+Supporting tasks:
+
+6. Update the README and project documentation
+7. Capture and upload demo screenshots
+8. Move all credentials into a git-ignored `.env`, purge the committed private key and database password from the git history, and rotate the TLS certificate
+9. Deploy the application over HTTPS with only `src/` inside the web root
 
 #### Contributions: 
 
 1. Corey Brunner, 6 commits, 9 hours, contributed in Created file structure to store files either in Front-End, Back-End, Database schema, and updated readme. Implemented basic code to allow users to sign on, create accounts, and manage accounts.
-2. Member 2 - Mike Wojtkiewicz, 5 commits, 3 hours, contributed in all tasks. Moved all secrets to a git-ignored `.env` and purged the committed TLS key and database password from the git history; fixed the broken `ALTER TABLE` and rewrote `schema.sql` with the new `posts` table; added `GetAllPosts()`, `viewposts.php`, `session_auth.php` and `index.php`; removed debug output that leaked plaintext passwords and SQL errors; deployed to Apache over HTTPS.
+2. Member 2 - Mike Wojtkiewicz, 6 commits, 3 hours, contributed by moving all secrets to a git-ignored `.env` and purged the committed TLS key and database password from the git history; fixed the broken `ALTER TABLE` and rewrote `schema.sql` with the new `posts` table and a surrogate `userid` primary key; added `GetAllPosts()`, `viewposts.php`, `session_auth.php` and `index.php`; fixed a password change that reported success on a wrong old password, and a profile edit that rejected the user's own username; removed debug output that leaked plaintext passwords and SQL errors; deployed to Apache over HTTPS.
 3. Member 3 - Bashar Rasras, x commits, y hours, contributed in xxx
-4. Member 4 - Pawan Poudyel, 9 commits, y hours, contributed in task 1, 2
+4. Member 4 - Pawan Poudyel, 6 commits, y hours, contributed in task 1, 2
 
 #### Sprint Retrospection:
 

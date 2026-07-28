@@ -5,7 +5,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 
-if (empty($_SESSION['username'])) {
+if (empty($_SESSION['userid'])) {
     // Relative redirect: the browser resolves it against the requested page,
     // so this works no matter where the app is mounted in the web root.
     // Include this file only from pages in Front-End/.

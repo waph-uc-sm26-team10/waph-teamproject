@@ -15,40 +15,49 @@
     function ChangePassword($newPassword, $oldPassword){
         try{
             global $mysqli;
-            $preparedsql = "UPDATE users SET password = md5(?) WHERE username = ? AND password = md5(?)";
+            $preparedsql = "UPDATE users SET password = md5(?) WHERE userid = ? AND password = md5(?)";
             $stmt = $mysqli->prepare($preparedsql);
             if(!$stmt) {
                 $_SESSION['StatusMessage'] = "Prepared statement failed.";
-                die();
+                return false;
             }
-            $stmt->bind_param("sss", $newPassword, $_SESSION['username'], $oldPassword );
+            $stmt->bind_param("sis", $newPassword, $_SESSION['userid'], $oldPassword );
 
-            if($stmt->execute()){
+            if(!$stmt->execute()){
+                $_SESSION['StatusMessage'] = "Changed Password Failed";
+                return false;
+            }
+            if($stmt->affected_rows === 1){
                 return true;
-            }   
-            $_SESSION['StatusMessage'] = "Changed Password Failed";
+            }
+            $_SESSION['StatusMessage'] = "Current password is incorrect.";
             return false;
         }
         catch(mysqli_sql_exception $e){
-            die();
+            error_log("WAPH-Team10 ChangePassword failed: " . $e->getMessage());
+            $_SESSION['StatusMessage'] = "Could not change password. Please try again.";
+            return false;
         }
     }
 
     function LoginUser($username, $password){
         try{
             global $mysqli;
-            $preparedsql = "SELECT * FROM users WHERE username = ? AND password = md5(?)";
+            $preparedsql = "SELECT userid, username FROM users WHERE username = ? AND password = md5(?)";
             $stmt = $mysqli->prepare($preparedsql);
             if(!$stmt) {
                 $_SESSION['StatusMessage'] = "Prepared statement failed.";
-                die();
+                return false;
             }
             $stmt->bind_param("ss", $username, $password);
 
             $stmt->execute();
 
-            if($stmt->get_result()->num_rows == 1){
-                $_SESSION['username'] = $username;
+            $result = $stmt->get_result();
+            if($result->num_rows == 1){
+                $row = $result->fetch_assoc();
+                $_SESSION['userid'] = (int) $row['userid'];
+                $_SESSION['username'] = $row['username'];
                 return true;
             }
             $_SESSION['StatusMessage'] = "Incorrect Username or Password";
@@ -109,10 +118,32 @@
         }
     }
 
+    function UsernameTakenByOther($username, $userid){
+        try{
+            global $mysqli;
+            $preparedsql = "SELECT userid FROM users WHERE username = ? AND userid <> ?";
+            $stmt = $mysqli->prepare($preparedsql);
+            if(!$stmt) {
+                $_SESSION['StatusMessage'] = "Prepared statement failed.";
+                return true;
+            }
+            $stmt->bind_param("si", $username, $userid);
+            $stmt->execute();
+            return $stmt->get_result()->num_rows > 0;
+        }
+        catch(mysqli_sql_exception $e){
+            error_log("WAPH-Team10 UsernameTakenByOther failed: " . $e->getMessage());
+            return true;
+        }
+    }
+
     function GetAllPosts(){
         try{
             global $mysqli;
-            $preparedsql = "SELECT postid, title, content, date, owner FROM posts ORDER BY date DESC, postid DESC";
+            $preparedsql = "SELECT p.postid, p.title, p.content, p.date, u.username
+                            FROM posts p
+                            JOIN users u ON p.owner = u.userid
+                            ORDER BY p.date DESC, p.postid DESC";
             $stmt = $mysqli->prepare($preparedsql);
             if(!$stmt) {
                 $_SESSION['StatusMessage'] = "Prepared statement failed.";
@@ -164,15 +195,14 @@
                 username = CASE WHEN ? IS NOT NULL THEN ? ELSE username END,
                 name = CASE WHEN ? IS  NOT NULL THEN ? ELSE name END,
                 phone = CASE WHEN ? IS  NOT NULL THEN ? ELSE phone END
-            WHERE username = ?";
+            WHERE userid = ?";
             $stmt = $mysqli->prepare($preparedsql);
             if(!$stmt) {
                 $_SESSION['StatusMessage'] = "Prepared statement failed.";
-                die();
+                return false;
             }
-            $stmt->bind_param("sssssssss", $email, $email, $username, $username, $name, $name,$phone,$phone, $_SESSION['username']);
-            //check if username already exists 
-            if(FindUser($username)){
+            $stmt->bind_param("ssssssssi", $email, $email, $username, $username, $name, $name,$phone,$phone, $_SESSION['userid']);
+            if($username !== null && UsernameTakenByOther($username, $_SESSION['userid'])){
                 $_SESSION['StatusMessage'] = "Username Already Exists";
                 return false;
             }
