@@ -60,11 +60,11 @@ The use cases implemented in Sprint 1, and the files that realize each one:
 
 | Use case | Front-end | Back-end | Data layer function |
 |---|---|---|---|
-| Register a new account | `Front-End/registrationform.php` | `Back-End/Registration.php` | `RegisterUser()`, `FindUser()` |
-| Log in | `Front-End/loginform.php` | `Back-End/LoginUser.php` | `LoginUser()` |
-| Change password | `Front-End/changepassword.php` | `Back-End/ChangePassword.php` | `ChangePassword()` |
-| Edit profile (name, email, phone) | `Front-End/changeaccountinfo.php` | `Back-End/ChangeAccountInfo.php` | `UpdateUser()` |
-| View posts | `Front-End/viewposts.php` | `Back-End/session_auth.php` | `GetAllPosts()` |
+| Register a new account | `Front-End/​registration​form.php` | `Back-End/​Registration.php` | `Register​User()`, `Find​User()` |
+| Log in | `Front-End/​login​form.php` | `Back-End/​Login​User.php` | `Login​User()` |
+| Change password | `Front-End/​change​password.php` | `Back-End/​Change​Password.php` | `Change​Password()` |
+| Edit profile (name, email, phone) | `Front-End/​change​account​info.php` | `Back-End/​Change​Account​Info.php` | `Update​User()` |
+| View posts | `Front-End/​view​posts.php` | `Back-End/​session_​auth.php` | `Get​All​Posts()` |
 
 `src/index.php` is the entry point. It reads the session and routes visitors to
 `Front-End/homepage.php` if they are logged in, or `Front-End/loginform.php` if not.
