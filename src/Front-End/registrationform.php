@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Lab 3 Login</title>
+    <title>Registration Form</title>
     <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="ui.css">
 </head>
@@ -32,7 +32,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="name">name: <span class="required-star">*</span></label>
+                        <label for="name">Name: <span class="required-star">*</span></label>
                         <div class="input-wrap">
                             <i class="fa-solid fa-id-card input-icon"></i>
                             <input id="name" type="text" name="name" required>

@@ -45,7 +45,7 @@
                     -->
                     <button class="primary-button" type="submit">
                         <i class="fa-solid fa-rotate"></i>
-                        Login
+                        Change Password
                     </button>
                 </form>
 
