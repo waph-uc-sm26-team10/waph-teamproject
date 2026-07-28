@@ -265,7 +265,7 @@ Duration: 07/14/2026-07/28/2026
 #### Contributions: 
 
 1. Corey Brunner, 6 commits, 9 hours, contributed in Created file structure to store files either in Front-End, Back-End, Database schema, and updated readme. Implemented basic code to allow users to sign on, create accounts, and manage accounts.
-2. Member 2 - Mike Wojtkiewicz, 5 commits, 3 hours, contributed in tasks 4, 5 and 6. Moved all secrets to a git-ignored `.env` and purged the committed TLS key and database password from the git history; fixed the broken `ALTER TABLE` and rewrote `schema.sql` with the new `posts` table; added `GetAllPosts()`, `viewposts.php`, `session_auth.php` and `index.php`; removed debug output that leaked plaintext passwords and SQL errors; deployed to Apache over HTTPS.
+2. Member 2 - Mike Wojtkiewicz, 5 commits, 3 hours, contributed in all tasks. Moved all secrets to a git-ignored `.env` and purged the committed TLS key and database password from the git history; fixed the broken `ALTER TABLE` and rewrote `schema.sql` with the new `posts` table; added `GetAllPosts()`, `viewposts.php`, `session_auth.php` and `index.php`; removed debug output that leaked plaintext passwords and SQL errors; deployed to Apache over HTTPS.
 3. Member 3 - Bashar Rasras, x commits, y hours, contributed in xxx
 4. Member 4 - Pawan Poudyel, 9 commits, y hours, contributed in task 1, 2
 
