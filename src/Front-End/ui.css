@@ -193,6 +193,7 @@ label {
 }
 
 .home-panel {
+  margin: 0 auto;
   max-width: 760px;
 }
 
