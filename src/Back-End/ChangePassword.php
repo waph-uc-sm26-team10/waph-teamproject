@@ -43,7 +43,7 @@ if (
     if (ChangePassword($newPassword,$oldPassword)) {
 	unset($_SESSION["change_password_csrf_token"]);
         echo "<h2>Password changed successful!</h2>";
-        echo "<p>Welcome, " . htmlentities($name, ENT_QUOTES, 'UTF-8') . "</p>";
+        echo "<p>Welcome, " . htmlentities($_SESSION['username'], ENT_QUOTES, 'UTF-8') . "</p>";
         header("Refresh:0; url=../Front-End/homepage.php");
         exit();
     } else {

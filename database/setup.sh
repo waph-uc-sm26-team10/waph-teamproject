@@ -37,6 +37,8 @@ VALUES ('${ADMIN_EMAIL}', '${ADMIN_USERNAME}', '${ADMIN_NAME}', md5('${ADMIN_PAS
 
 SET @adminid = LAST_INSERT_ID();
 
+INSERT INTO superusers(userid) VALUES (@adminid);
+
 INSERT INTO posts(title, content, owner) VALUES
   ('Welcome to miniFacebook',
    'This is the first post on the Team 10 miniFacebook application.',
@@ -44,6 +46,12 @@ INSERT INTO posts(title, content, owner) VALUES
   ('Sprint 1 progress',
    'Registration, login, password changes, and profile editing are in place.',
    @adminid);
+
+INSERT INTO comments(postid, owner, content)
+SELECT postid, @adminid, 'Great to see this up and running.'
+FROM posts WHERE owner = @adminid ORDER BY postid LIMIT 1;
 SQL
 
-echo "Database '${DB_NAME}' set up successfully (tables: users, posts)."
+echo "Database '${DB_NAME}' set up successfully."
+echo "  admin account: ${ADMIN_USERNAME}  (regular user + superuser)"
+echo "Sign in at /Front-End/loginform.php; superusers also get /Admin/dashboard.php."

@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
     if (LoginUser($username, $password)) {
         echo "<h2>Login successful!</h2>";
-        echo "<p>Welcome, " . htmlentities($name, ENT_QUOTES, 'UTF-8') . "</p>";
+        echo "<p>Welcome, " . htmlentities($_SESSION['username'], ENT_QUOTES, 'UTF-8') . "</p>";
         header("Refresh:0; url=../Front-End/homepage.php");
         exit();
     } else {

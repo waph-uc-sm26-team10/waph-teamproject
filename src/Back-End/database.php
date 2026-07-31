@@ -43,7 +43,7 @@
     function LoginUser($username, $password){
         try{
             global $mysqli;
-            $preparedsql = "SELECT userid, username FROM users WHERE username = ? AND password = md5(?)";
+            $preparedsql = "SELECT userid, username, disabled FROM users WHERE username = ? AND password = md5(?)";
             $stmt = $mysqli->prepare($preparedsql);
             if(!$stmt) {
                 $_SESSION['StatusMessage'] = "Prepared statement failed.";
@@ -56,8 +56,14 @@
             $result = $stmt->get_result();
             if($result->num_rows == 1){
                 $row = $result->fetch_assoc();
+                if((int) $row['disabled'] === 1){
+                    $_SESSION['StatusMessage'] = "This account has been disabled. Please contact an administrator.";
+                    return false;
+                }
+                session_regenerate_id(true);
                 $_SESSION['userid'] = (int) $row['userid'];
                 $_SESSION['username'] = $row['username'];
+                $_SESSION['role'] = IsSuperuser((int) $row['userid']) ? 'superuser' : 'user';
                 return true;
             }
             $_SESSION['StatusMessage'] = "Incorrect Username or Password";
@@ -140,7 +146,7 @@
     function GetAllPosts(){
         try{
             global $mysqli;
-            $preparedsql = "SELECT p.postid, p.title, p.content, p.date, u.username
+            $preparedsql = "SELECT p.postid, p.title, p.content, p.date, u.username, u.userid
                             FROM posts p
                             JOIN users u ON p.owner = u.userid
                             ORDER BY p.date DESC, p.postid DESC";
@@ -154,8 +160,8 @@
                 return [];
             }
 
-            $postid = NULL; $title = NULL; $content = NULL; $date = NULL; $owner = NULL;
-            if(!$stmt->bind_result($postid, $title, $content, $date, $owner)){
+            $postid = NULL; $title = NULL; $content = NULL; $date = NULL; $owner = NULL; $ownerid = NULL;
+            if(!$stmt->bind_result($postid, $title, $content, $date, $owner, $ownerid)){
                 $_SESSION['StatusMessage'] = "Binding failed.";
                 return [];
             }
@@ -167,7 +173,8 @@
                     'title'   => $title,
                     'content' => $content,
                     'date'    => $date,
-                    'owner'   => $owner
+                    'owner'   => $owner,
+                    'ownerid' => (int) $ownerid
                 ];
             }
             $stmt->close();
@@ -216,6 +223,235 @@
         }catch(mysqli_sql_exception $e){
             error_log("WAPH-Team10 UpdateUser failed: " . $e->getMessage());
             $_SESSION['StatusMessage'] = "Failed to change account info. Please try again";
+            return false;
+        }
+    }
+
+    function AddPost($title, $content, $userid){
+        try{
+            global $mysqli;
+            $stmt = $mysqli->prepare("INSERT INTO posts (title, content, owner) VALUES (?,?,?)");
+            if(!$stmt) {
+                $_SESSION['StatusMessage'] = "Prepared statement failed.";
+                return false;
+            }
+            $stmt->bind_param("ssi", $title, $content, $userid);
+            if($stmt->execute()){
+                $_SESSION['StatusMessage'] = "Post created.";
+                return true;
+            }
+            $_SESSION['StatusMessage'] = "Could not create the post. Please try again.";
+            return false;
+        }
+        catch(mysqli_sql_exception $e){
+            error_log("WAPH-Team10 AddPost failed: " . $e->getMessage());
+            $_SESSION['StatusMessage'] = "Could not create the post. Please try again.";
+            return false;
+        }
+    }
+
+    function GetPost($postid){
+        try{
+            global $mysqli;
+            $stmt = $mysqli->prepare("SELECT postid, title, content, date, owner FROM posts WHERE postid = ?");
+            if(!$stmt) return null;
+            $stmt->bind_param("i", $postid);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->num_rows === 1 ? $result->fetch_assoc() : null;
+        }
+        catch(mysqli_sql_exception $e){
+            error_log("WAPH-Team10 GetPost failed: " . $e->getMessage());
+            return null;
+        }
+    }
+
+    function UpdatePost($postid, $title, $content, $userid){
+        try{
+            global $mysqli;
+            $stmt = $mysqli->prepare("UPDATE posts SET title = ?, content = ? WHERE postid = ? AND owner = ?");
+            if(!$stmt) {
+                $_SESSION['StatusMessage'] = "Prepared statement failed.";
+                return false;
+            }
+            $stmt->bind_param("ssii", $title, $content, $postid, $userid);
+            if(!$stmt->execute()){
+                $_SESSION['StatusMessage'] = "Could not update the post.";
+                return false;
+            }
+            if($stmt->affected_rows === 1){
+                $_SESSION['StatusMessage'] = "Post updated.";
+                return true;
+            }
+            $_SESSION['StatusMessage'] = "You can only edit your own posts.";
+            return false;
+        }
+        catch(mysqli_sql_exception $e){
+            error_log("WAPH-Team10 UpdatePost failed: " . $e->getMessage());
+            $_SESSION['StatusMessage'] = "Could not update the post.";
+            return false;
+        }
+    }
+
+    function DeletePost($postid, $userid){
+        try{
+            global $mysqli;
+            $stmt = $mysqli->prepare("DELETE FROM posts WHERE postid = ? AND owner = ?");
+            if(!$stmt) {
+                $_SESSION['StatusMessage'] = "Prepared statement failed.";
+                return false;
+            }
+            $stmt->bind_param("ii", $postid, $userid);
+            if(!$stmt->execute()){
+                $_SESSION['StatusMessage'] = "Could not delete the post.";
+                return false;
+            }
+            if($stmt->affected_rows === 1){
+                $_SESSION['StatusMessage'] = "Post deleted.";
+                return true;
+            }
+            $_SESSION['StatusMessage'] = "You can only delete your own posts.";
+            return false;
+        }
+        catch(mysqli_sql_exception $e){
+            error_log("WAPH-Team10 DeletePost failed: " . $e->getMessage());
+            $_SESSION['StatusMessage'] = "Could not delete the post.";
+            return false;
+        }
+    }
+
+    function AddComment($postid, $userid, $content){
+        try{
+            global $mysqli;
+            $stmt = $mysqli->prepare("INSERT INTO comments (postid, owner, content) VALUES (?,?,?)");
+            if(!$stmt) {
+                $_SESSION['StatusMessage'] = "Prepared statement failed.";
+                return false;
+            }
+            $stmt->bind_param("iis", $postid, $userid, $content);
+            if($stmt->execute()){
+                $_SESSION['StatusMessage'] = "Comment added.";
+                return true;
+            }
+            $_SESSION['StatusMessage'] = "Could not add the comment.";
+            return false;
+        }
+        catch(mysqli_sql_exception $e){
+            error_log("WAPH-Team10 AddComment failed: " . $e->getMessage());
+            $_SESSION['StatusMessage'] = "Could not add the comment.";
+            return false;
+        }
+    }
+
+    function GetCommentsForPost($postid){
+        try{
+            global $mysqli;
+            $stmt = $mysqli->prepare("SELECT c.commentid, c.content, c.date, u.username
+                                      FROM comments c
+                                      JOIN users u ON c.owner = u.userid
+                                      WHERE c.postid = ?
+                                      ORDER BY c.date ASC, c.commentid ASC");
+            if(!$stmt) return [];
+            $stmt->bind_param("i", $postid);
+            $stmt->execute();
+            $comments = [];
+            $result = $stmt->get_result();
+            while($row = $result->fetch_assoc()){
+                $comments[] = $row;
+            }
+            return $comments;
+        }
+        catch(mysqli_sql_exception $e){
+            error_log("WAPH-Team10 GetCommentsForPost failed: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    function IsSuperuser($userid){
+        try{
+            global $mysqli;
+            $stmt = $mysqli->prepare("SELECT superuserid FROM superusers WHERE userid = ?");
+            if(!$stmt) return false;
+            $stmt->bind_param("i", $userid);
+            $stmt->execute();
+            return $stmt->get_result()->num_rows === 1;
+        }
+        catch(mysqli_sql_exception $e){
+            error_log("WAPH-Team10 IsSuperuser failed: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    function GetAllUsers(){
+        try{
+            global $mysqli;
+            $stmt = $mysqli->prepare("SELECT u.userid, u.username, u.email, u.name, u.phone, u.disabled,
+                                             (s.superuserid IS NOT NULL) AS is_superuser
+                                      FROM users u
+                                      LEFT JOIN superusers s ON s.userid = u.userid
+                                      ORDER BY u.userid ASC");
+            if(!$stmt) return [];
+            $stmt->execute();
+            $users = [];
+            $result = $stmt->get_result();
+            while($row = $result->fetch_assoc()){
+                $users[] = $row;
+            }
+            return $users;
+        }
+        catch(mysqli_sql_exception $e){
+            error_log("WAPH-Team10 GetAllUsers failed: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    function SetUserSuperuser($userid, $makeSuperuser){
+        try{
+            global $mysqli;
+            if($makeSuperuser){
+                $stmt = $mysqli->prepare("INSERT IGNORE INTO superusers (userid) VALUES (?)");
+            } else {
+                $stmt = $mysqli->prepare("DELETE FROM superusers WHERE userid = ?");
+            }
+            if(!$stmt) {
+                $_SESSION['StatusMessage'] = "Prepared statement failed.";
+                return false;
+            }
+            $stmt->bind_param("i", $userid);
+            if(!$stmt->execute()){
+                $_SESSION['StatusMessage'] = "Could not update the account.";
+                return false;
+            }
+            $_SESSION['StatusMessage'] = $makeSuperuser ? "Account promoted to superuser." : "Superuser access removed.";
+            return true;
+        }
+        catch(mysqli_sql_exception $e){
+            error_log("WAPH-Team10 SetUserSuperuser failed: " . $e->getMessage());
+            $_SESSION['StatusMessage'] = "Could not update the account.";
+            return false;
+        }
+    }
+
+    function SetUserDisabled($userid, $disabled){
+        try{
+            global $mysqli;
+            $flag = $disabled ? 1 : 0;
+            $stmt = $mysqli->prepare("UPDATE users SET disabled = ? WHERE userid = ?");
+            if(!$stmt) {
+                $_SESSION['StatusMessage'] = "Prepared statement failed.";
+                return false;
+            }
+            $stmt->bind_param("ii", $flag, $userid);
+            if(!$stmt->execute()){
+                $_SESSION['StatusMessage'] = "Could not update the account.";
+                return false;
+            }
+            $_SESSION['StatusMessage'] = $flag ? "Account disabled." : "Account enabled.";
+            return true;
+        }
+        catch(mysqli_sql_exception $e){
+            error_log("WAPH-Team10 SetUserDisabled failed: " . $e->getMessage());
+            $_SESSION['StatusMessage'] = "Could not update the account.";
             return false;
         }
     }
