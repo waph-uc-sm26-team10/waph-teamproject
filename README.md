@@ -449,7 +449,7 @@ Supporting and security tasks:
 | Sensitive credentials were removed from the repository and moved into `.env`. | Sensitive files had been committed during an earlier version of the project. | Review `.gitignore` and secret-management rules before the first commit of each sprint. |
 | Modified and missing CSRF tokens were successfully rejected. | Screenshots and README documentation were completed near the end of the sprint. | Capture screenshots and update documentation whenever each feature is completed. |
 
-### Sprint x
+### Sprint 2/3
 
 Duration: MM/DD/YYYY-MM/DD/YYYY
 
@@ -463,7 +463,7 @@ Duration: MM/DD/YYYY-MM/DD/YYYY
 #### Contributions
 
 1. Member 1, x commits, y hours, contributed in xxx.
-2. Member 2, x commits, y hours, contributed in xxx.
+2. Member 2 Mike Wojtkiewicz, 2 commits, 8 hours, contributed in by adding posts/comment updates and CRUD operations. Added superusers and role based access control. Added editing/deleting posts. 
 3. Member 3, x commits, y hours, contributed in xxx.
 4. Member 4, x commits, y hours, contributed in xxx.
 
