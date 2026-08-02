@@ -8,3 +8,6 @@ sslkey/*.key
 
 # Locally generated SQL that may contain credentials
 database/*.local.sql
+
+#node_modules from node.js installation
+node_modules
