@@ -21,24 +21,32 @@ require __DIR__ . "/../Back-End/session_auth.php";
                     <p class="project-kicker">miniFacebook</p>
                     <h1>Public Chat</h1>
                 </div>
+                <div class="header-actions">
+                    <a class="secondary-button" href="homepage.php">
+                        <i class="fa-solid fa-house"></i>
+                        Home
+                    </a>
+                    <a class="secondary-button" href="../Back-End/logout.php">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        Logout
+                    </a>
+                </div>
             </header>
             <label for="title">Title</label>
-            <input id="chat-message" type="text" autocomplete="off" placeholder="Type a Message" style="width:450px;" size="30"
+            <input class="message-input" id="chat-message" type="text" autocomplete="off" placeholder="Type a Message" style="width:450px;" size="30"
                 onkeypress="var user = document.getElementById('username').value.trim(); myWebSocket.emit('typing', user); EnterToSend(event)">                
-            <button id="send" class="secondary-button">Send</button>
+            <button id="send" class="compact-button">Send</button>
             <div id="typing"></div>
-            <label for="content">Chat Box</label>
-            <div class= id="responses"></div>
+            <label style="padding-top: 5px;" for="content">Chat Box</label>
+            <div class="chat-box" id="responses"></div>
             </form>
         </section>
     </main>
     <input type="hidden" id="username" value="<?php echo htmlspecialchars($_SESSION['username']) ?>">
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        // Connect to the backend server
         const myWebSocket = io();
 
-        // Log when the connection is successful
         document.getElementById("send").addEventListener('click', SendMsg)
 
         function SendMsg() {
@@ -48,6 +56,8 @@ require __DIR__ . "/../Back-End/session_auth.php";
             if (!msg) return;
             console.log(`Dubug> Message Being Sent to Server: ${msg} from ${user}`);
             myWebSocket.emit("message", msg, user);
+            var msg = document.getElementById("chat-message").value = "";
+
         }
 
         myWebSocket.on("display-msg", (data) => {
@@ -69,8 +79,6 @@ require __DIR__ . "/../Back-End/session_auth.php";
             document.getElementById('typing').innerHTML = `${user} is typing ... <br>`;
             setTimeout(function () { document.getElementById("typing").innerHTML = ""; }, 500);
         });
-
-
 
     </script>
 </body>

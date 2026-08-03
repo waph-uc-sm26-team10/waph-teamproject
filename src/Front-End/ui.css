@@ -581,3 +581,14 @@ label {
 .comment-form textarea {
   max-width: 100%;
 }
+
+.message-input{
+  width: 92% !important;
+  height: 5vh;
+}
+.chat-box{
+  border: 1px solid black;
+  width: 100%;
+  /* Takes up 80% of the browser window's height */
+  height: 80vh;
+}
