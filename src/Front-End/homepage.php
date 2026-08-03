@@ -37,6 +37,10 @@
                     <i class="fa-solid fa-newspaper"></i>
                     <span>view posts</span>
                 </a>
+                <a class="home-action" href="publicchat.php">
+                    <i class="fa-solid fa-message"></i>
+                    <span>Join Public Chat</span>
+                </a>
 <?php if ($isSuperuser): ?>
                 <a class="home-action" href="../Admin/dashboard.php">
                     <i class="fa-solid fa-users-gear"></i>
