@@ -591,4 +591,14 @@ label {
   width: 100%;
   /* Takes up 80% of the browser window's height */
   height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  padding: 8px;
+}
+
+.chat-box div{
+  margin-bottom: 4px;
+  max-width: 100%;
 }

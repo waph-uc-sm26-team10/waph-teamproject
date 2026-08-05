@@ -32,14 +32,13 @@ require __DIR__ . "/../Back-End/session_auth.php";
                     </a>
                 </div>
             </header>
-            <label for="title">Title</label>
+            <label for="chat-message">Message</label>
             <input class="message-input" id="chat-message" type="text" autocomplete="off" placeholder="Type a Message" style="width:450px;" size="30"
                 onkeypress="var user = username_val; myWebSocket.emit('typing', user); EnterToSend(event)">                
             <button id="send" class="compact-button">Send</button>
             <div id="typing"></div>
-            <label style="padding-top: 5px;" for="content">Chat Box</label>
+            <label style="padding-top: 5px;" for="responses">Chat Box</label>
             <div class="chat-box" id="responses"></div>
-            </form>
         </section>
     </main>
     <script src="/socket.io/socket.io.js"></script>
@@ -63,11 +62,19 @@ require __DIR__ . "/../Back-End/session_auth.php";
         }
 
         myWebSocket.on("display-msg", (data) => {
-            console.log(data);
+            var responses = document.getElementById('responses');
             var div = document.createElement('div');
-            var timeStamp = new Date().toLocaleTimeString();
-            div.innerHTML = '<span style="color: #2431e5">[' + timeStamp + ']</span> ' + data;
-            document.getElementById('responses').appendChild(div);
+            var timeStamp = document.createElement('span');
+            var messageText = document.createElement('span');
+
+            timeStamp.style.color = '#2431e5';
+            timeStamp.textContent = '[' + new Date().toLocaleTimeString() + '] ';
+            messageText.textContent = data;
+
+            div.appendChild(timeStamp);
+            div.appendChild(messageText);
+            responses.appendChild(div);
+            responses.scrollTop = responses.scrollHeight;
         });
 
         function EnterToSend(event) {
@@ -78,8 +85,9 @@ require __DIR__ . "/../Back-End/session_auth.php";
         }
 
         myWebSocket.on("typing", (user) => {
-            document.getElementById('typing').innerHTML = `${user} is typing ... <br>`;
-            setTimeout(function () { document.getElementById("typing").innerHTML = ""; }, 500);
+            var typing = document.getElementById('typing');
+            typing.textContent = `${user} is typing ...`;
+            setTimeout(function () { typing.textContent = ""; }, 500);
         });
 
     </script>
