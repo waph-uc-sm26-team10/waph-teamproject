@@ -17,7 +17,7 @@ socketio.on('connection', function(socketclient){
         + socketclient.client.conn.remoteAddress + ": " + socketclient.id
     );
     socketclient.on("message", function(data, user){
-        console.log(`Debug> recieved a chat message: ${data}`);
+        console.log(`Debug> received a chat message: ${data}`);
         if(!data || data.trim() === '') return;
         if(!user || user.trim() === ''){
             console.log("Debug> Unauthorized user sent a message");

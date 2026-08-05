@@ -34,7 +34,7 @@ require __DIR__ . "/../Back-End/session_auth.php";
             </header>
             <label for="title">Title</label>
             <input class="message-input" id="chat-message" type="text" autocomplete="off" placeholder="Type a Message" style="width:450px;" size="30"
-                onkeypress="var user = document.getElementById('username').value.trim(); myWebSocket.emit('typing', user); EnterToSend(event)">                
+                onkeypress="var user = username_val; myWebSocket.emit('typing', user); EnterToSend(event)">                
             <button id="send" class="compact-button">Send</button>
             <div id="typing"></div>
             <label style="padding-top: 5px;" for="content">Chat Box</label>
@@ -42,8 +42,10 @@ require __DIR__ . "/../Back-End/session_auth.php";
             </form>
         </section>
     </main>
-    <input type="hidden" id="username" value="<?php echo htmlspecialchars($_SESSION['username']) ?>">
     <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var username_val = "<?php echo htmlspecialchars($_SESSION['username']) ?>"
+    </script>
     <script>
         const myWebSocket = io();
 
@@ -51,7 +53,7 @@ require __DIR__ . "/../Back-End/session_auth.php";
 
         function SendMsg() {
             var msg = document.getElementById("chat-message").value.trim();
-            var user = document.getElementById("username").value.trim();
+            var user = username_val;
             // var user = "corey";
             if (!msg) return;
             console.log(`Dubug> Message Being Sent to Server: ${msg} from ${user}`);
