@@ -530,7 +530,7 @@ Duration: 07/29/2026-08/05/2026
 
 #### Contributions
 
-1. Corey Brunner, 6 commits, 7 hours, Updated setup bash script and ssl.conf file to support socket. Implemented Real Time chat, its features ("[username] is typing") and its UI. Handled pull request once the application was stable on "ChatImplementation" branch.
+1. Member 1 Corey Brunner, 6 commits, 7 hours, Updated setup bash script and ssl.conf file to support socket. Implemented Real Time chat, its features ("[username] is typing") and its UI. Handled pull request once the application was stable on "ChatImplementation" branch.
 2. Member 2 Mike Wojtkiewicz, 2 commits, 8 hours, contributed in by adding posts/comment updates and CRUD operations. Added superusers and role based access control. Added editing/deleting posts. 
 3. Member 3 Bashar Rasras, 3 commits, 6 hours, contributed by creating the final demonstration video and implementing security fixes for the real-time chat feature.
 4. Member 4 Pawan Poudyel, 2 commits, 4 hours, contributed by performing final application testing and verification and updating the README for the final submission.
