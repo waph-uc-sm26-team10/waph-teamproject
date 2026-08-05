@@ -64,16 +64,16 @@ The use cases implemented in Sprint 1, and the files that realize each one:
 
 | Use case | Front-end | Back-end | Data layer function |
 |---|---|---|---|
-| Register a new account | `Front-End/​registration​form.php` | `Back-End/​Registration.php` | `Register​User()`, `Find​User()` |
-| Log in | `Front-End/​login​form.php` | `Back-End/​Login​User.php` | `Login​User()` |
-| Change password | `Front-End/​change​password.php` | `Back-End/​Change​Password.php` | `Change​Password()` |
-| Edit profile (name, email, phone) | `Front-End/​change​account​info.php` | `Back-End/​Change​Account​Info.php` | `Update​User()` |
-| View posts | `Front-End/​view​posts.php` | `Back-End/​session_​auth.php` | `Get​All​Posts()` |
-| Create a post | `Front-End/newpost.php` | `Back-End/AddNewPost.php` | `AddPost()` |
-| Edit/delete own post | `Front-End/editpost.php`, `Front-End/viewposts.php` | `Back-End/EditPost.php`, `Back-End/DeletePost.php` | `UpdatePost()`, `DeletePost()` |
-| Add/view comments | `Front-End/viewposts.php` | `Back-End/AddComment.php` | `AddComment()`, `GetCommentsForPost()` |
-| Manage registered users | `Admin/dashboard.php` | `Back-End/superuser_auth.php`, `Back-End/ToggleUser.php` | `GetAllUsers()`, `SetUserDisabled()` |
-| Real-time chat | `Front-End/publicchat.php` | `Back-End/session_auth.php`, `Back-End/socketio-chatserver.js` | Socket.IO message/typing events |
+| Register a new account | Front-End/registrationform.php | Back-End/Registration.php | RegisterUser(), FindUser() |
+| Log in | Front-End/loginform.php | Back-End/LoginUser.php | LoginUser() |
+| Change password | Front-End/changepassword.php | Back-End/ChangePassword.php | ChangePassword() |
+| Edit profile | Front-End/changeaccountinfo.php | Back-End/ChangeAccountInfo.php | UpdateUser() |
+| View posts | Front-End/viewposts.php | Back-End/session_auth.php | GetAllPosts() |
+| Create a post | Front-End/newpost.php | Back-End/AddNewPost.php | AddPost() |
+| Edit/delete own post | Front-End/editpost.php, Front-End/viewposts.php | Back-End/EditPost.php, Back-End/DeletePost.php | UpdatePost(), DeletePost() |
+| Add/view comments | Front-End/viewposts.php | Back-End/AddComment.php | AddComment(), GetCommentsForPost() |
+| Manage registered users | Admin/dashboard.php | Back-End/superuser_auth.php, Back-End/ToggleUser.php | GetAllUsers(), SetUserDisabled() |
+| Real-time chat | Front-End/publicchat.php | Back-End/session_auth.php, Back-End/socketio-chatserver.js | Socket.IO events |
 
 `src/index.php` is the entry point. It reads the session and routes visitors to
 `Front-End/homepage.php` if they are logged in, or `Front-End/loginform.php` if not.
@@ -97,9 +97,8 @@ deleting a user removes their posts.
 
 The same cascade design removes a user's comments and superuser assignment, and deleting a post removes its comments. The `users.disabled` flag preserves the account while preventing login.
 
-<!-- SCREENSHOT-->
+All tables and their relations  
 
-All tables and their relations
 ![All tables](screenshots/screenshot1.1.png)  
 
 ![All tables](screenshots/screenshot1.2.png)  
@@ -2725,6 +2724,14 @@ if (!empty($_SESSION['userid'])) {
 }
 exit();
 
+````
+
+````
+pandoc README.md \
+  -f markdown-implicit_figures \
+  -V geometry:margin=0.6in \
+  -V fontsize=10pt \
+  -o team10-waph-minifacebook-final.pdf
 ````
 
 Last revision: 2026-08-05
