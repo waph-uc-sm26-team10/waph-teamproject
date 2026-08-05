@@ -19,6 +19,10 @@ Source code repository (private access): [https://github.com/waph-uc-sm26-team10
 
 Project homepage (public): [homepage](https://waph-uc-sm26-team10.github.io/)
 
+Public Repository: [https://github.com/waph-uc-sm26-team10/waph-uc-sm26-team10.github.io](https://github.com/waph-uc-sm26-team10/waph-uc-sm26-team10.github.io)
+
+Video Demo: [video](https://www.youtube.com/watch?v=q7TzI183M0M)
+
 ## Revision History
 
 | Date       | Version | Description |
@@ -221,15 +225,12 @@ $stmt->bind_param("ssii", $title, $content, $postid, $userid);
 
 **Final CSRF coverage.** actions include random session tokens validated using `hash_equals()` before the requested change occurs.
 
-<!-- SCREENSHOT-->
 
 ![Poster being able to edit/delete their own posts](screenshots/screenshot2.png)  
 
-<!--SCREENSHOT-->
 
 ![Superuser dashboard](screenshots/screenshot3.png)  
 
-<!--SCREENSHOT-->
 
 ![Live chat demo](screenshots/screenshot4.png)  
 
@@ -332,7 +333,6 @@ The final implementation of miniFacebook had more validation, output encoding, s
 
 Role-based access control is applied at the page, request-handler, and SQL layers. A regular user can'y enter the admin dashboard, and a user can't update or delete a post unless the authenticated `userid` matches its owner.
 
-<!--SCREENSHOT-->
 
 ![XXS attack attempt](screenshots/screenshot5.png)  
 
@@ -438,13 +438,11 @@ The first table describes the schema used to store users' information. The secon
 
 ### Owner-Only Post Management
 
-<!-- SCREENSHOT-->
 
 ![Cannot delete someone elses posts](screenshots/screenshot7.png)  
 
 ### Superuser Disable and Enable Workflow
 
-<!--SCREENSHOT -->
 
 ![Account gets disabled](screenshots/screenshot8.1.png)  
 
@@ -452,13 +450,10 @@ The first table describes the schema used to store users' information. The secon
 
 ### CSRF Attack Against Post Deletion
 
-<!--SCREENSHOT-->
 
 ![CSRF detected when using an invalid token](screenshots/screenshot9.png)  
 
 ### Real-Time Chat
-
-<!--SCREENSHOT-->
 
 ![Chat screenshot with typing indicators](screenshots/screenshot10.png)  
 
