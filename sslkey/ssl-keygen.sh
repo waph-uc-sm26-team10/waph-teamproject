@@ -29,6 +29,10 @@ sudo install -m 644 -o root -g root waph-team10.crt /etc/ssl/certs/waph-team10.c
 sudo install -m 600 -o root -g root waph-team10.key /etc/ssl/private/waph-team10.key
 echo "Installed to /etc/ssl/certs and /etc/ssl/private."
 
+sudo a2enmod proxy_http
+sudo a2enmod proxy_wstunnel
+sudo a2enmod rewrite
+
 if sudo apache2ctl configtest 2>/dev/null; then
     sudo systemctl reload apache2
     echo "Apache reloaded."
