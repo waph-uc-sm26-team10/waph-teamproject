@@ -93,7 +93,12 @@ deleting a user removes their posts.
 
 The same cascade design removes a user's comments and superuser assignment, and deleting a post removes its comments. The `users.disabled` flag preserves the account while preventing login.
 
-<!-- SCREENSHOT NEEDED: Add a final database/ER-diagram screenshot showing users, posts, comments, superusers, and their keys/relationships. -->
+<!-- SCREENSHOT-->
+
+All tables and their relations
+![All tables](screenshots/screenshot1.1.png)  
+
+![All tables](screenshots/screenshot1.2.png)  
 
 ## User Interface
 
@@ -216,11 +221,17 @@ $stmt->bind_param("ssii", $title, $content, $postid, $userid);
 
 **Final CSRF coverage.** actions include random session tokens validated using `hash_equals()` before the requested change occurs.
 
-<!-- SCREENSHOT NEEDED: Add screenshots showing post creation, owner-only editing/deletion, and one user commenting on another user's post. -->
+<!-- SCREENSHOT-->
 
-<!-- SCREENSHOT NEEDED: Add a screenshot of the superuser dashboard showing the registered-user list and active/disabled status. -->
+![Poster being able to edit/delete their own posts](screenshots/screenshot2.png)  
 
-<!-- SCREENSHOT NEEDED: Add a screenshot of two authenticated users exchanging real-time chat messages. -->
+<!--SCREENSHOT-->
+
+![Superuser dashboard](screenshots/screenshot3.png)  
+
+<!--SCREENSHOT-->
+
+![Live chat demo](screenshots/screenshot4.png)  
 
 ## Deployment
 
@@ -321,9 +332,10 @@ The final implementation of miniFacebook had more validation, output encoding, s
 
 Role-based access control is applied at the page, request-handler, and SQL layers. A regular user can'y enter the admin dashboard, and a user can't update or delete a post unless the authenticated `userid` matches its owner.
 
-<!-- SCREENSHOT NEEDED: Add an XSS test showing markup submitted as a post/comment/chat message and rendered harmlessly as text. -->
+<!--SCREENSHOT-->
 
-<!-- SCREENSHOT NEEDED: Add a regular-user attempt to open `/Admin/dashboard.php`, showing that access is rejected. -->
+![XXS attack attempt](screenshots/screenshot5.png)  
+
 
 # Demo (screenshots)
 
@@ -420,23 +432,35 @@ The first table describes the schema used to store users' information. The secon
 
 ### Posts and Comments
 
-<!-- SCREENSHOT NEEDED: Show a user creating a post, editing it, deleting a disposable post, and commenting on another user's post. -->
+<!-- SCREENSHOT-->
+
+![Deleted post and comment example](screenshots/screenshot6.png)  
 
 ### Owner-Only Post Management
 
-<!-- SCREENSHOT NEEDED: Show that User B has no edit/delete controls for User A's post and that a manually crafted cross-user request is rejected. -->
+<!-- SCREENSHOT-->
+
+![Cannot delete someone elses posts](screenshots/screenshot7.png)  
 
 ### Superuser Disable and Enable Workflow
 
-<!-- SCREENSHOT NEEDED: Show the user list, disabling an account, the disabled account failing to log in, re-enabling it, and its successful login afterward. -->
+<!--SCREENSHOT -->
+
+![Account gets disabled](screenshots/screenshot8.1.png)  
+
+![Can no longer login](screenshots/screenshot8.2.png)  
 
 ### CSRF Attack Against Post Deletion
 
-<!-- SCREENSHOT NEEDED: Show a deletion request with a missing/modified CSRF token being rejected, followed by the post still existing. -->
+<!--SCREENSHOT-->
+
+![CSRF detected when using an invalid token](screenshots/screenshot9.png)  
 
 ### Real-Time Chat
 
-<!-- SCREENSHOT NEEDED: Show two logged-in users exchanging messages in real time, preferably including the typing indicator. -->
+<!--SCREENSHOT-->
+
+![Chat screenshot with typing indicators](screenshots/screenshot10.png)  
 
 # Software Process Management
 
@@ -458,11 +482,10 @@ Duration: 09/07/2026-21/07/2026
 
 #### Contributions
 
-1. Corey Brunner, 7 commits, 4.5 hours, contributed by including a custom domain screenshot inside the README and completing individual tasks.
-2. Member 2, x commits, y hours, contributed in xxx.
-3. Member 3, x commits, y hours, contributed in xxx.
-4. Member 4, x commits, y hours, contributed in xxx.
-////TODO STILL
+1. Member 1 Corey Brunner, 7 commits, 4.5 hours, contributed by including a custom domain screenshot inside the README and completing individual tasks.
+2. Member 2 Mike Wojtkiewicz, 4 commits, 5 hours, contributed by setting up ssl keys and created setup script.
+3. Member 3 Bashar Rasras, 4 commits, 4 hours, contributed by updating readme added login system, and screenshots.
+4. Member 4 Pawan Poudyel, 4 commits, 4 hours, contributed by updating readme, added screnshots, and fixed issues with .env file.
 
 ### Sprint 1
 
